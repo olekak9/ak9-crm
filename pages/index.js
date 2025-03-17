@@ -54,4 +54,53 @@ export default function FitnessCRM() {
           {/* Dodawanie nowego klienta */}
           <div className="flex flex-col gap-2 mb-4">
             <h2 className="text-xl font-semibold">Dodaj nowego klienta</h2>
-            <
+            <Input type="text" placeholder="Imię i nazwisko" value={newClient.name} onChange={(e) => setNewClient({ ...newClient, name: e.target.value })} />
+            <Input type="email" placeholder="Email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} />
+            <Input type="text" placeholder="Rodzaj treningu" value={newClient.training} onChange={(e) => setNewClient({ ...newClient, training: e.target.value })} />
+            <Button onClick={addClient}>Dodaj klienta</Button>
+          </div>
+
+          {/* Lista klientów */}
+          <h2 className="text-xl font-semibold mb-2">Lista klientów</h2>
+          <Table className="w-full border">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Imię i nazwisko</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Trening</TableCell>
+                <TableCell>Płatność</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clients.map((client) => (
+                <TableRow key={client.id} className="border">
+                  <TableCell>{client.id}</TableCell>
+                  <TableCell>{client.name}</TableCell>
+                  <TableCell>{client.email}</TableCell>
+                  <TableCell>{client.training}</TableCell>
+                  <TableCell>
+                    <Switch checked={client.payment} onCheckedChange={() => togglePayment(client.id)} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {/* Dodawanie terminu treningu */}
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold">Dodaj termin treningu</h2>
+            <select className="border p-2 rounded w-full mb-2" value={selectedClient || ""} onChange={(e) => setSelectedClient(parseInt(e.target.value))}>
+              <option value="">Wybierz klienta</option>
+              {clients.map((client) => (
+                <option key={client.id} value={client.id}>{client.name}</option>
+              ))}
+            </select>
+            <Calendar value={selectedDate} onChange={setSelectedDate} />
+            <Button onClick={addTrainingDate} className="mt-2">Dodaj termin</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
